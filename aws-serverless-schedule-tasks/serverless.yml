@@ -1,0 +1,29 @@
+service: serverless-hk-s3
+frameworkVersion: "3"
+
+custom:
+  output:
+    file: .serverless/output.json
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-stack-output
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage,'dev'}
+  region: ap-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ses : '*'
+          Resource: '*'
+
+functions:
+  reminderEmail:
+      handler: 'src/reminderEmail.handler'
+      events: 
+          - schedule: cron (0 9 ? * 7 *)
