@@ -1,0 +1,17 @@
+service: aws-serverless-textract
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage,'dev'}
+  region: eu-west-2
+
+functions:
+  extractPhoneNumber:
+    handler: src/handler.handler
+    events:
+      - http:
+          path: extract-phone-number
+          method: post
+          BUCKET: test-content
